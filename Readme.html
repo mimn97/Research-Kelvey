@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello!</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="welcome-to-dr-kelveys-research">Welcome to Dr. Kelvey’s Research!</h1>
+
+<p>Welcome to Dr. Kelvey’s Research! I am Minhwa Lee, and I’m a junior and double-majoring in Math and CS (and potentially minoring in Data Science, too.) I was Dr. Kelvey’s research assistant for the last semester. This document is mainly written for introducing and explaining what I have previously done for the research project. I hope this document helps you so that you will lead Dr. Kelvey’s research to a success!</p>
+
+<p><div class="toc">
+<ul>
+<li><a href="#welcome-to-dr-kelveys-research">Welcome to Dr. Kelvey’s Research!</a><ul>
+<li><a href="#definition-of-class-graphgame">Definition of Class ‘GraphGame’ </a></li>
+<li><a href="#initial-function">Initial function</a></li>
+<li><a href="#draw-an-edge-between-two-vertices">Draw an edge between two vertices</a></li>
+<li><a href="#remove-an-edge-between-two-vertices">Remove an edge between two vertices</a></li>
+<li><a href="#check-the-existence-of-an-edge-between-two-vertices">Check the existence of an edge between two vertices</a></li>
+<li><a href="#visualize-an-adjacency-matrix">Visualize an adjacency matrix</a></li>
+<li><a href="#play-games-on-graph">Play Games on Graph</a><ul>
+<li><a href="#initial-condition">Initial Condition</a></li>
+<li><a href="#game-mode">Game Mode</a><ul>
+<li><a href="#when-two-users-play">When Two Users Play</a></li>
+<li><a href="#when-user-and-computer-play">When User and Computer Play</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#application-to-a-cube">Application to a Cube</a></li>
+</ul>
+</div>
+</p>
+
+<hr>
+
+
+
+<h2 id="definition-of-class-graphgame">Definition of Class ‘GraphGame’ </h2>
+
+<p>The entire codes that I have written down mainly underly one of Python’s main characteristics so that we can utilize benefits of objected-oriented programming. The class GraphGame has 7 functions in itself, which enables the user to construct and simulate any kind of graph in Python. Now, I am going to explain what each of all those functions in the class work for. </p>
+
+
+
+<h2 id="initial-function">Initial function</h2>
+
+<p>This function is for constructing any kind of graph and creating an initial adjacency matrix for the graph. It also contains a list of vertices that the constructed graph has, as you see in the last sentence of the definition below. </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs python">// Definition of initial condition function
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GraphGame</span><span class="hljs-params">(object)</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self,size)</span>:</span>
+        self.adjMatrix = []
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(size):
+            self.adjMatrix.append([<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(size)])
+        self.size = size
+        self.nodeList = [] <span class="hljs-comment"># Initialization</span></code></pre>
+
+
+
+<h2 id="draw-an-edge-between-two-vertices">Draw an edge between two vertices</h2>
+
+
+
+<pre class="prettyprint"><code class=" hljs python">// Create a list <span class="hljs-keyword">for</span> containing nodes <span class="hljs-keyword">in</span> a given graph
+// Update an adjacency matrix of the graph
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">addEdge</span><span class="hljs-params">(self,v1,v2)</span>:</span>
+        <span class="hljs-keyword">if</span> v1 == v2:
+            print(<span class="hljs-string">"Same vertex %d and %d"</span> %(v1, v2))
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">if</span> (str(v1) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self.nodeList) 
+            <span class="hljs-keyword">and</span> (str(v2) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self.nodeList):
+                self.nodeList.append(str(v1))
+                self.nodeList.append(str(v2)) 
+
+            self.adjMatrix[v1-<span class="hljs-number">1</span>][v2-<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>
+            self.adjMatrix[v2-<span class="hljs-number">1</span>][v1-<span class="hljs-number">1</span>] = <span class="hljs-number">1</span></code></pre>
+
+<p>The first if-statement checks a condition of drawing an edge between any two vertices - if the two vertices in a constructed graph ‘self’, v1 and v2,  are same, then no edge can be drawn between these two. Now, we move on to the second if-statement, which also shows another base condition in that the graph contains two vertices v1 and v2 in the list of vertices (self. nodeList). We can also update an adjacency matrix of the graph to have a value of 1 if there is an edge drawn between v1 and v2. </p>
+
+
+
+<h2 id="remove-an-edge-between-two-vertices">Remove an edge between two vertices</h2>
+
+
+
+<pre class="prettyprint"><code class=" hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">removeEdge</span><span class="hljs-params">(self,v1,v2)</span>:</span>
+        <span class="hljs-keyword">if</span> self.adjMatrix[v1-<span class="hljs-number">1</span>][v2-<span class="hljs-number">1</span>] == <span class="hljs-number">0</span>:
+            print(<span class="hljs-string">"No edge between %d and %d"</span> %(v1, v2))
+            <span class="hljs-keyword">return</span>
+        self.adjMatrix[v1-<span class="hljs-number">1</span>][v2-<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>
+        self.adjMatrix[v2-<span class="hljs-number">1</span>][v1-<span class="hljs-number">1</span>] = <span class="hljs-number">0</span></code></pre>
+
+<p>This function first checks a base condition that the vertices v1 and v2 should have an edge between themselves - if so, then we update the adjacency matrix of the graph to having a value of 0. </p>
+
+
+
+<h2 id="check-the-existence-of-an-edge-between-two-vertices">Check the existence of an edge between two vertices</h2>
+
+
+
+<pre class="prettyprint"><code class=" hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">isEdge</span><span class="hljs-params">(self,v1,v2)</span>:</span>
+        <span class="hljs-keyword">if</span> self.adjMatrix[v1-<span class="hljs-number">1</span>][v2-<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span></code></pre>
+
+<p>One purpose of creating an adjacency matrix of a certain graph is to check whether any two vertices in the graph has an edge between themselves. This can be identified by looking at the value of the corresponding adjacency matrix of the graph. If the value is greater than 0, this means there is an edge between v1 and v2. </p>
+
+
+
+<h2 id="visualize-an-adjacency-matrix">Visualize an adjacency matrix</h2>
+
+
+
+<pre class="prettyprint"><code class=" hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">toString</span><span class="hljs-params">(self)</span>:</span>
+        i = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> self.adjMatrix:
+            print(i, row)
+            i = i+<span class="hljs-number">1</span></code></pre>
+
+<p>Those several codes in the definition above print out the adjacency matrix of the newly constructed graph in the command window. </p>
+
+<hr>
+
+
+
+<h2 id="play-games-on-graph">Play Games on Graph</h2>
+
+
+
+<h3 id="initial-condition">Initial Condition</h3>
+
+
+
+<pre class="prettyprint"><code class=" hljs makefile"><span class="hljs-constant">p</span> = []    
+<span class="hljs-constant">p1</span> = []   
+<span class="hljs-constant">p2</span> = []
+<span class="hljs-constant">comp</span> = [] 
+<span class="hljs-constant">user</span> = []
+
+<span class="hljs-constant">p1_adj</span> = [] 
+<span class="hljs-constant">p2_adj</span> = []
+<span class="hljs-constant">comp_adj</span> = []
+<span class="hljs-constant">user_adj</span> = []
+
+<span class="hljs-constant">loop</span> = [] 
+
+p.append("1")
+p1.append("1")
+
+<span class="hljs-constant">choice_p2</span> = "1" 
+<span class="hljs-constant">count</span> = 0</code></pre>
+
+<ul>
+<li><strong>P</strong> : A list of vertices that two players have already stepped on. </li>
+<li><strong>P1</strong> : A list of vertices that player 1 have stepped on the graph. </li>
+<li><strong>P2</strong>: A list of vertices that player 2 have stepped on the graph. </li>
+<li><strong>Comp</strong>: A list of vertices that the computer has chosen to move on to. </li>
+<li><strong>User</strong>: A list of vertices that the user has chosen to move on to. </li>
+<li><strong>p1_adj</strong> : A list of vertices that player 1 can choose to go to for the next turn. </li>
+<li><strong>p2_adj</strong>: A list of vertices that player 2 can choose to go to for the next turn. </li>
+<li><strong>comp_adj</strong>: A list of vertices that computer can choose to move forward. </li>
+<li><strong>user_adj</strong>: A list of vertices that user can select to move on to. </li>
+<li><strong>Loop</strong>: A list of vertices that can make a possible loop for each player</li>
+</ul>
+
+<p>And, we use a labeled cube like below to play this game.  </p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Labeled_cube_graph.png" alt="Cube" title=""></p>
+
+<p>We also assume that player 1 always starts first, and he/she begins the game on the vertex “1.” So, we append the vertex <strong>1</strong> to both the list <strong>p</strong> and <strong>p1</strong>.  Also, player 2 should step on all vertices that player 1 have been already on before making a choice for their turn. That’s why we also append <strong>1</strong> to the list <strong>choice_p2</strong>. </p>
+
+
+
+<h3 id="game-mode">Game Mode</h3>
+
+<p>All codes that I have created so far is to only play the Relation-Making Game. So, I set two different modes for this kind of game: one is ‘User vs. User’ and the other is ‘User vs. Computer.’ </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs php">mode = input(<span class="hljs-string">"Mode 1: 2 players \n
+    Game 2: User vs Computer \nChoose Game mode: "</span>)
+
+<span class="hljs-keyword">if</span> mode == <span class="hljs-string">"1"</span>:
+   <span class="hljs-keyword">print</span>(<span class="hljs-string">"Mode 1: 2 players"</span>)
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> mode == <span class="hljs-string">"2"</span>:
+   <span class="hljs-keyword">print</span>(<span class="hljs-string">"Mode 2: User vs Computer"</span>)</code></pre>
+
+<p>We first look at codes for the first game mode - User vs. User. </p>
+
+<hr>
+
+
+
+<h4 id="when-two-users-play"><strong>When Two Users Play</strong></h4>
+
+<p>Since player 1 starts a game on the vertex <strong>1</strong>, now it is player 2’s turn to choose which vertex to move on to. First, we make a for-loop to get information of which vertices are adjacent to the last vertex that player 1 have already chosen to step onto. This loop will create a list <strong>p2_adj</strong>. (*see the explanation of this list in the above section.) </p>
+
+<p>To help you understand better, let me present some examples to think about some conditions to create <strong>p2_adj</strong>. If player 1 has been in more than 1 vertex on any graph, the list <strong>p</strong> has at least 2 elements. Under this situation, we can easily figure out that the possible vertices that player 2 can move on to should be adjacent to the last element of the list <strong>p</strong>. Along with this condition, those possible vertices should be also not identical to the second from the last of the list <strong>p</strong>. This is because of the rule that players are not allowed to move backward. With only these conditions can player 2 choose vertices on any graph to move forward. </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.<span class="hljs-symbol">nodeList:</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.isEdge(int(p[-<span class="hljs-number">1</span>],int(node))<span class="hljs-keyword">and</span>(p[-<span class="hljs-number">2</span>]!=node)<span class="hljs-symbol">:</span>
+        p2_adj.append(node)</code></pre>
+
+<p>What if player 1 just starts the game so that the list <strong>p</strong> only has one element? Under this special scenario, we then need to think about another condition to add to the list <strong>p2_adj</strong> every possible vertices that player 2 may move forward to. </p>
+
+<p>Since <strong>p</strong> has only one element, we cannot apply the if-statement above to this situation. So, we now need to use an adjacency matrix of a graph to sort out those vertices for player 2.  If a node is adjacent to the vertex <strong>1</strong>, then a value of an adjacency matrix regarding these two vertices should be 1. We then use this property to code a if-statement in the loop, as follows.  Also, to separate this special condition from the general situations described above, we set a variable named ‘count’ to be 0. If this initial condition ends, the value of ‘count’ is no longer 0. I will also mention it below. </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs objectivec"><span class="hljs-keyword">for</span> node in <span class="hljs-keyword">self</span><span class="hljs-variable">.nodeList</span>:
+  <span class="hljs-keyword">if</span> count == <span class="hljs-number">0</span>: 
+          <span class="hljs-preprocessor"># this only applies to the initial condition</span>
+     <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span><span class="hljs-variable">.adjMatrix</span>[<span class="hljs-keyword">int</span>(p[-<span class="hljs-number">1</span>]-<span class="hljs-number">1</span>][<span class="hljs-keyword">int</span>(mode)-<span class="hljs-number">1</span>] == <span class="hljs-number">1</span>:
+         p2_adj<span class="hljs-variable">.append</span>(node)</code></pre>
+
+<p>Putting all together, we now present a completed loop to select the possible vertices that player 2 can move on to, as follows. </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs rust"><span class="hljs-keyword">for</span> node in <span class="hljs-keyword">self</span>.nodeList:
+  <span class="hljs-keyword">if</span> count == <span class="hljs-number">0</span>:
+     <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.adjMatrix[<span class="hljs-keyword">int</span>(p[-<span class="hljs-number">1</span>]-<span class="hljs-number">1</span>][<span class="hljs-keyword">int</span>(mode)-<span class="hljs-number">1</span>] == <span class="hljs-number">1</span>:
+         p2_adj.append(node)
+  <span class="hljs-keyword">else</span>:
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.isEdge(<span class="hljs-keyword">int</span>(p[-<span class="hljs-number">1</span>]), <span class="hljs-keyword">int</span>(node)) and p[-<span class="hljs-number">2</span>] != node:
+         p2_adj.append(node)
+</code></pre>
+
+<hr>
+
+<p>There is another point to think about regarding any loop that each player can make while playing the game.  This process can be also completed by constructing a for-loop. One main condition in creating a loop is that, any vertex that can be included as an element of the list <strong>loop</strong> should already exist in the list <strong>p</strong>.  For example, if <strong>p = [1,2,3,4]</strong>, we can notice that a player for the next turn can only choose a vertex between <strong>1</strong> and <strong>8</strong>.  Then, this player will absolutely choose <strong>1</strong> to win this game. Therefore, <strong>p2_adj</strong> contains <strong>1</strong> and <strong>8</strong> as its element,  and also <strong>1</strong> should be present in <strong>p</strong> to make a loop, and below is what I have written for this condition. </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs vbnet"><span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> p2_adj:
+    <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> p:
+        <span class="hljs-keyword">loop</span>.append(node)</code></pre>
+
+<p>As far as we create two lists <strong>p2_adj</strong> and <strong>loop</strong> which provide player 2 all information that help them choose a vertex for each turn, we then know the choice of player 2 (as it is named <strong>choice_p2</strong>.) Likewise, if the choice of player 2 already exist in the list <strong>p</strong>, this means player 2 make a loop and win the game, and the game ends.  If not, we just append this choice to both <strong>p2</strong> and <strong>p</strong>, thus updating the paths that each player have move on to for each turn. </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs go"><span class="hljs-keyword">if</span> (choice_p2 in p):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"RESULT\n Player 2 wins the game!\n"</span>)
+    <span class="hljs-keyword">break</span>
+<span class="hljs-keyword">else</span>:
+    p2.<span class="hljs-built_in">append</span>(self.nodeList[<span class="hljs-typename">int</span>(choice_p2<span class="hljs-number">)-1</span>])
+    p.<span class="hljs-built_in">append</span>(self.nodeList[<span class="hljs-typename">int</span>(choice_p2<span class="hljs-number">)-1</span>])</code></pre>
+
+<p>We can also apply the same idea that has been described above so far to the situation for player 1. To do this, we only need to just rename some variables in loops or if-statements. </p>
+
+<hr>
+
+
+
+<h4 id="when-user-and-computer-play"><strong>When User and Computer Play</strong></h4>
+
+<p>Consider player 1 and 2 in the first game mode now becomes user and computer. Then, we only need to rename player 1 and 2 with user and computer in this new game mode with the same codes that the first game mode have already used. </p>
+
+<blockquote>
+  <ul>
+  <li>Replace <strong>p2_adj</strong> with <strong>comp_adj</strong>. </li>
+  <li>Replace <strong>p1_adj</strong> with <strong>user_adj</strong>. </li>
+  <li>Replace <strong>choice_p2</strong> with <strong>choice_comp</strong>.</li>
+  <li>Replace <strong>choice_p1</strong> with <strong>choice_user</strong>.  </li>
+  </ul>
+</blockquote>
+
+<p>Here is one more condition that we need to think about only for this game mode.  Computer automatically chooses a vertex within a setting as we have already done by making several lists for further information. To apply this characteristic of computer to python codes, therefore, we use a built-in function called ‘random.choice’ for the computer to choose which vertex to move forward for its turn. Then if a list <strong>loop</strong> has at least one element for the computer to choose, then computer chooses their vertex for the next turn in the list <strong>loop</strong>. If not, the computer are allowed to do so only in the list <strong>comp</strong>.</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs rsl"><span class="hljs-keyword">if</span> len(loop) &gt; <span class="hljs-number">0</span>:
+    choice_comp = <span class="hljs-built_in">random</span>.choice(loop)
+<span class="hljs-keyword">else</span>:
+    choice_comp = <span class="hljs-built_in">random</span>.choice(<span class="hljs-built_in">comp</span>)</code></pre>
+
+<hr>
+
+
+
+<h2 id="application-to-a-cube">Application to a Cube</h2>
+
+<p>Now it’s time to apply what we just created on our codes to a real-world mathematics. To test our program, we will first create a cube by using several functions in the class GraphGame. The codes below is based on the picture of a cube in the earlier section, and they are also defined in the main function. </p>
+
+<pre class="prettyprint"><code class=" hljs avrasm">def main(): 
+    c = GraphGame(<span class="hljs-number">8</span>) 
+
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>) 
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">1</span>,<span class="hljs-number">5</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">2</span>,<span class="hljs-number">3</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">2</span>,<span class="hljs-number">6</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">3</span>,<span class="hljs-number">7</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">4</span>,<span class="hljs-number">8</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">5</span>,<span class="hljs-number">6</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">5</span>,<span class="hljs-number">8</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">6</span>,<span class="hljs-number">7</span>)
+    c<span class="hljs-preprocessor">.addEdge</span>(<span class="hljs-number">7</span>,<span class="hljs-number">8</span>)
+
+    c<span class="hljs-preprocessor">.toString</span>() 
+
+    c<span class="hljs-preprocessor">.gameOnGraph</span>()
+</code></pre>
+
+<p>Finally, we execute our program by this main function described below. </p>
+
+<pre class="prettyprint"><code class=" hljs bash"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    main()</code></pre>
+
+<p>You can execute this program in terminal if you are Mac user, or in command prompt if you are Window person. </p>
+
+<pre class="prettyprint"><code class=" hljs bash"><span class="hljs-built_in">cd</span> desktop
+python3 Research.py</code></pre>
+
+<h2 id="comments">Comments</h2>
+
+<p>You just finished reading my long readme file for this research project! Thank you so much for your spending time on my writings, and I hope this article really helps you a lot to understand the project. If you have any question about this document or whatever stuffs related to python codes, please email me by mlee21@wooster.edu. </p>
+
+<p>Good luck on your research! </p></div></body>
+</html>
